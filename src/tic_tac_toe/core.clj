@@ -6,10 +6,6 @@
   []
   (vec (repeat 3 (vec (repeat 3 nil)))))
 
-(def board (atom (new-board)))
-(def players [:O :X])
-(def current-player (atom (get players 0)))
-
 (defn valid-move?
   [board line column]
   (and (<= line 2) (>= line 0) (<= column 2) (>= column 0) (nil? (get-in board [line column]))))
@@ -46,9 +42,9 @@
 
 (defn validate-values
   [values]
-  (if (not (some #(= nil %) values))
-   (if (apply = values)
-    (get values 0))))
+  (when (every? some? values)
+    (when (apply = values)
+      (first values))))
 
 (defn validate-lines
   [board]
@@ -57,38 +53,19 @@
 
 (defn validate-columns
   [board]
-  (let [columns-values 
-        (map-indexed
-          (fn [line-idx _]
-            (map-indexed
-              (fn [_ column-values]
-                (get column-values line-idx)))
-            board)
-          board)]
-    (for [column columns-values]
-      (validate-values (vec column)))))
+  (let [columns (apply map vector board)]
+    (map validate-values columns)))
 
 (defn validate-diagonals
   [board]
   (let [board-size (count board)
-        first-diagonal
-          (vec
-             (for [y (range) :while (< y board-size)]
-               (get-in board [y y])))
-          second-diagonal
-        (vec
-          (for [column (range) :while (< column board-size)]
-            (let [line (- board-size (+ column 1))]
-              (get-in board [line column]))))]
-    (for [diagonal [first-diagonal second-diagonal]]
-      (validate-values diagonal))))
+        first-diagonal (map #(get-in board [% %]) (range board-size))
+        second-diagonal (map #(get-in board [% (- (dec board-size) %)]) (range board-size))]
+    (map validate-values [first-diagonal second-diagonal])))
 
 (defn get-winner
   [results]
-  (get
-    (vec
-      (filter #(not (nil? %)) results))
-    0))
+  (first (remove nil? results)))
 
 (defn winner?
   [board]

@@ -97,7 +97,6 @@
         diagonals-results (validate-diagonals board)]
     (get-winner (flatten [columns-results lines-results diagonals-results]))))
 
-
 (defn print-line
   [line]
   (println (get line 0) "|" (get line 1) "|" (get line 2)))
@@ -118,25 +117,14 @@
   (print (str (char 27) "[2J"))  
   (print (str (char 27) "[;H")))
 
-
 (defn -main
   "Starts tic-tac-toe"
   []
-  (while (nil? (winner? @board))
-    (let [next-player (filterv #(not= % @current-player) players)]
-      (reset! current-player (get next-player 0)))
+  (loop [board (new-board) player :O]
     (reset-terminal-text)
-    (print-board @board)
-    (println)
-    (reset! board (make-move @board @current-player)))
+    (print-board board)
+    (if-let [w (winner? board)]
+      (println "Winner is" w)
+      (let [next-board (make-move board player)]
+        (recur next-board (if (= player :O) :X :O))))))
 
-  (reset-terminal-text)
-  (println "The winner is:" @current-player)
-  (println)
-  (println "Final board:")
-  (print-board @board)
-  (do
-    (println "Press ENTER to restart the game")
-    (read-line)
-    (reset! board (new-board))
-    (-main)))

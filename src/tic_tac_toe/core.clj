@@ -26,15 +26,9 @@
         (read-value player selector)))))
 
 (defn make-move
-  "Makes a move in the game setting the player symbol to the desired position if possible"
-  [board player]
-  (let [line (read-value player "line")
-        column (read-value player "column")]
-    (if (valid-move? board line column)
-      (assoc-in board [line column] player)
-      (do
-        (println "Invalid position, please try again.")
-        (make-move board player)))))
+  "Returns a board with updated values"
+  [board line column player]
+  (assoc-in board [line column] player))
 
 (defn board-full?
   [board]
@@ -53,6 +47,7 @@
 
 (defn validate-columns
   [board]
+  ; Map with multiple params execute one "column" at a time, check map documentation for more details
   (let [columns (apply map vector board)]
     (map validate-values columns)))
 
@@ -94,6 +89,10 @@
   (print (str (char 27) "[2J"))  
   (print (str (char 27) "[;H")))
 
+(defn get-next-player
+  [player]
+  (if (= player :O) :X :O))
+
 (defn -main
   "Starts tic-tac-toe"
   []
@@ -108,6 +107,11 @@
         (do
           (println)
           (println "It is a tie!"))
-        (let [next-board (make-move board player)]
-          (recur next-board (if (= player :O) :X :O)))))))
-
+        (do
+          (let [line (read-value player "line")
+                column (read-value player "column")]
+            (if (valid-move? board line column)
+              (recur (make-move board line column player) (get-next-player player))
+              (do
+                (println "Invalid move, please try again!")
+                (recur board player)))))))))

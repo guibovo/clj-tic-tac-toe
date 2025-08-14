@@ -93,20 +93,30 @@
   [player]
   (if (= player :O) :X :O))
 
+(defn print-result
+  [message]
+  (println)
+  (println "##############")
+  (println)
+  (println message)
+  (println)
+  (println "##############"))
+
 (defn -main
   "Starts tic-tac-toe"
   []
   (loop [board (new-board) player :O]
     (reset-terminal-text)
     (print-board board)
-    (if-let [w (winner? board)]
-      (do
-        (println)
-        (println "Winner is" w))
-      (if (board-full? board)
-        (do
-          (println)
-          (println "It is a tie!"))
+    (let [winner (winner? board)]
+      (cond
+        winner
+        (print-result (str "The winner is " winner))
+        
+        (board-full? board)
+        (print-result "It is a tie!")
+        
+        :else
         (do
           (let [line (read-value player "line")
                 column (read-value player "column")]

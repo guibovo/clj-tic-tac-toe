@@ -38,7 +38,7 @@
 
 (defn board-full?
   [board]
-  (not (some nil? board)))
+  (not (some nil? (flatten board))))
 
 (defn validate-values
   [values]
@@ -101,7 +101,13 @@
     (reset-terminal-text)
     (print-board board)
     (if-let [w (winner? board)]
-      (println "Winner is" w)
-      (let [next-board (make-move board player)]
-        (recur next-board (if (= player :O) :X :O))))))
+      (do
+        (println)
+        (println "Winner is" w))
+      (if (board-full? board)
+        (do
+          (println)
+          (println "It is a tie!"))
+        (let [next-board (make-move board player)]
+          (recur next-board (if (= player :O) :X :O)))))))
 

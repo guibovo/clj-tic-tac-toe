@@ -1,44 +1,41 @@
-# tic-tac-toe
+# Clojure Tic Tac Toe - play project
 
-FIXME: description
+A simple command-line Tic-Tac-Toe game written in [Clojure](https://clojure.org/).
 
-## Installation
+This project was generated using:
 
-Download from http://example.com/FIXME.
+`lein new app tic-tac-toe`
+
+## Requirements
+
+Before running the app, make sure that you have:
+
+[Java JDK 8+](https://docs.oracle.com/en/java/javase/17/install/overview-jdk-installation.html)
+[Leiningen](https://leiningen.org/#install)
+
 
 ## Usage
 
-FIXME: explanation
+Clone this repository
 
-    $ java -jar tic-tac-toe-0.1.0-standalone.jar [args]
+```
+git clone https://github.com/your-username/tic-tac-toe.git
+cd tic-tac-toe
+```
 
-## Options
+### Run the app
 
-FIXME: listing of options this app accepts.
+`lein run`
 
-## Examples
+### Development
 
-...
+Start repl
 
-### Bugs
+`lein repl`
 
-...
+### Running tests
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+####The current version doesn't include tests.
 
-## License
+`lein test`
 
-Copyright © 2025 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.

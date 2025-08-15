@@ -125,3 +125,12 @@
               (do
                 (println "Invalid move, please try again!")
                 (recur board player)))))))))
+
+(comment
+  (def board (new-board))
+  (print-board board)
+  (valid-move? board 1 1)
+  (def updated-board (make-move board 1 1 :O))
+  (print-board updated-board)
+  (valid-move? updated-board 1 1))
+  
